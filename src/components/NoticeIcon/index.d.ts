@@ -6,9 +6,9 @@ export interface INoticeIconProps {
   bell?: React.ReactNode;
   className?: string;
   loading?: boolean;
-  onClear?: (tabName: string) => void;
+  onClear?: (tableTile: string) => void;
   onItemClick?: (item: INoticeIconData, tabProps: INoticeIconProps) => void;
-  onTabChange?: (tabTile: string) => void;
+  onTabChange?: (tableTile: string) => void;
   popupAlign?: {
     points?: [string, string];
     offset?: [number, number];
@@ -22,7 +22,6 @@ export interface INoticeIconProps {
   onPopupVisibleChange?: (visible: boolean) => void;
   popupVisible?: boolean;
   locale?: { emptyText: string; clear: string };
-  clearClose?: boolean;
 }
 
 export default class NoticeIcon extends React.Component<INoticeIconProps, any> {

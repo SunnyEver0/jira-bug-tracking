@@ -1,11 +1,11 @@
+import './index.less';
+
 import React from 'react';
 
-import styles from './index.less';
-
 const Field = ({ label, value, ...rest }) => (
-  <div className={styles.field} {...rest}>
-    <span className={styles.label}>{label}</span>
-    <span className={styles.number}>{value}</span>
+  <div className='field' {...rest}>
+    <span>{label}</span>
+    <span>{value}</span>
   </div>
 );
 

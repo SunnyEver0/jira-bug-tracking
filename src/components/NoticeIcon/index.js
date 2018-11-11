@@ -1,9 +1,9 @@
-import React, { PureComponent } from 'react';
-import ReactDOM from 'react-dom';
-import { Popover, Icon, Tabs, Badge, Spin } from 'antd';
+import './index.less';
+
+import { Badge, Icon, Popover, Spin, Tabs } from 'antd';
 import classNames from 'classnames';
+import React, { PureComponent } from 'react';
 import List from './NoticeList';
-import styles from './index.less';
 
 const { TabPane } = Tabs;
 
@@ -16,30 +16,17 @@ export default class NoticeIcon extends PureComponent {
     onTabChange: () => {},
     onClear: () => {},
     loading: false,
-    clearClose: false,
     locale: {
-      emptyText: 'No notifications',
-      clear: 'Clear',
+      emptyText: '暂无数据',
+      clear: '清空',
     },
     emptyImage: 'https://gw.alipayobjects.com/zos/rmsportal/wAhyIChODzsoKIOBHcBk.svg',
   };
 
   onItemClick = (item, tabProps) => {
     const { onItemClick } = this.props;
-    const { clickClose } = item;
     onItemClick(item, tabProps);
-    if (clickClose) {
-      this.popover.click();
-    }
   };
-
-  onClear = (name) => {
-    const { onClear, clearClose } = this.props;
-    onClear(name)
-    if (clearClose) {
-      this.popover.click();
-    }
-  }
 
   onTabChange = tabType => {
     const { onTabChange } = this.props;
@@ -47,7 +34,7 @@ export default class NoticeIcon extends PureComponent {
   };
 
   getNotificationBox() {
-    const { children, loading, locale } = this.props;
+    const { children, loading, locale, onClear } = this.props;
     if (!children) {
       return null;
     }
@@ -57,12 +44,12 @@ export default class NoticeIcon extends PureComponent {
           ? `${child.props.title} (${child.props.list.length})`
           : child.props.title;
       return (
-        <TabPane tab={title} key={child.props.name}>
+        <TabPane tab={title} key={child.props.title}>
           <List
             {...child.props}
             data={child.props.list}
             onClick={item => this.onItemClick(item, child.props)}
-            onClear={() => this.onClear(child.props.name)}
+            onClear={() => onClear(child.props.title)}
             title={child.props.title}
             locale={locale}
           />
@@ -71,7 +58,7 @@ export default class NoticeIcon extends PureComponent {
     });
     return (
       <Spin spinning={loading} delay={0}>
-        <Tabs className={styles.tabs} onChange={this.onTabChange}>
+        <Tabs className="tabs" onChange={this.onTabChange}>
           {panes}
         </Tabs>
       </Spin>
@@ -80,12 +67,12 @@ export default class NoticeIcon extends PureComponent {
 
   render() {
     const { className, count, popupAlign, popupVisible, onPopupVisibleChange, bell } = this.props;
-    const noticeButtonClass = classNames(className, styles.noticeButton);
+    const noticeButtonClass = classNames(className, "noticeButton");
     const notificationBox = this.getNotificationBox();
-    const NoticeBellIcon = bell || <Icon type="bell" className={styles.icon} />;
+    const NoticeBellIcon = bell || <Icon type="bell" className="icon" />;
     const trigger = (
       <span className={noticeButtonClass}>
-        <Badge count={count} style={{ boxShadow: 'none' }} className={styles.badge}>
+        <Badge count={count} style={{ boxShadow: 'none' }} className="badge">
           {NoticeBellIcon}
         </Badge>
       </span>
@@ -101,13 +88,12 @@ export default class NoticeIcon extends PureComponent {
       <Popover
         placement="bottomRight"
         content={notificationBox}
-        popupClassName={styles.popover}
+        popupClassName="popover"
         trigger="click"
         arrowPointAtCenter
         popupAlign={popupAlign}
         onVisibleChange={onPopupVisibleChange}
         {...popoverProps}
-        ref={node => { this.popover = ReactDOM.findDOMNode(node)}} // eslint-disable-line
       >
         {trigger}
       </Popover>

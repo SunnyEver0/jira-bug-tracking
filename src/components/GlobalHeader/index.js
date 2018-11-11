@@ -1,11 +1,11 @@
-import React, { PureComponent } from 'react';
+import './index.less';
+
 import { Icon } from 'antd';
-import Link from 'umi/link';
 import Debounce from 'lodash-decorators/debounce';
-import styles from './index.less';
+import React, { PureComponent } from 'react';
 import RightContent from './RightContent';
 
-export default class GlobalHeader extends PureComponent {
+export default class Header extends PureComponent {
   componentWillUnmount() {
     this.triggerResizeEvent.cancel();
   }
@@ -23,16 +23,11 @@ export default class GlobalHeader extends PureComponent {
     this.triggerResizeEvent();
   };
   render() {
-    const { collapsed, isMobile, logo } = this.props;
+    const { collapsed } = this.props;
     return (
-      <div className={styles.header}>
-        {isMobile && (
-          <Link to="/" className={styles.logo} key="logo">
-            <img src={logo} alt="logo" width="32" />
-          </Link>
-        )}
+      <div className="header">
         <Icon
-          className={styles.trigger}
+          className="trigger"
           type={collapsed ? 'menu-unfold' : 'menu-fold'}
           onClick={this.toggle}
         />

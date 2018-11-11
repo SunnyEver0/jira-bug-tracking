@@ -1,7 +1,8 @@
+import '../index.less';
+
+import { Axis, Chart, Geom, Tooltip } from 'bizcharts';
 import React from 'react';
-import { Chart, Axis, Tooltip, Geom } from 'bizcharts';
 import autoHeight from '../autoHeight';
-import styles from '../index.less';
 
 @autoHeight()
 class MiniArea extends React.PureComponent {
@@ -19,6 +20,9 @@ class MiniArea extends React.PureComponent {
       yAxis,
       animate = true,
     } = this.props;
+
+    console.log('height' + height);
+    console.log(data);
 
     const padding = [36, 5, 30, 5];
 
@@ -45,8 +49,8 @@ class MiniArea extends React.PureComponent {
     const chartHeight = height + 54;
 
     return (
-      <div className={styles.miniChart} style={{ height }}>
-        <div className={styles.chartContent}>
+      <div className='miniChart' style={{ height }}>
+        <div className='chartContent'>
           {height > 0 && (
             <Chart
               animate={animate}

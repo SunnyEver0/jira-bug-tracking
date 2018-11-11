@@ -1,12 +1,12 @@
-import React, { PureComponent } from 'react';
-import { FormattedMessage, formatMessage } from 'umi/locale';
-import { Spin, Tag, Menu, Icon, Dropdown, Avatar, Tooltip } from 'antd';
-import moment from 'moment';
+import './index.less';
+
+import { Avatar, Dropdown, Icon, Menu, Spin, Tag, Tooltip } from 'antd';
 import groupBy from 'lodash/groupBy';
-import NoticeIcon from '../NoticeIcon';
-import HeaderSearch from '../HeaderSearch';
-import SelectLang from '../SelectLang';
-import styles from './index.less';
+import moment from 'moment';
+import React, { PureComponent } from 'react';
+// import { FormattedMessage } from 'umi/locale';
+import HeaderSearch from '../headerSearch';
+import NoticeIcon from '../noticeIcon';
 
 export default class GlobalHeaderRight extends PureComponent {
   getNoticeData() {
@@ -42,7 +42,7 @@ export default class GlobalHeaderRight extends PureComponent {
 
   render() {
     const {
-      currentUser,
+      userInfo,
       fetchingNotices,
       onNoticeVisibleChange,
       onMenuClick,
@@ -50,41 +50,37 @@ export default class GlobalHeaderRight extends PureComponent {
       theme,
     } = this.props;
     const menu = (
-      <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
+      <Menu className="menu" selectedKeys={[]} onClick={onMenuClick}>
         <Menu.Item key="userCenter">
           <Icon type="user" />
-          <FormattedMessage id="menu.account.center" defaultMessage="account center" />
+          <span>account center</span>
         </Menu.Item>
         <Menu.Item key="userinfo">
           <Icon type="setting" />
-          <FormattedMessage id="menu.account.settings" defaultMessage="account settings" />
+          <span>account settings</span>
         </Menu.Item>
         <Menu.Item key="triggerError">
           <Icon type="close-circle" />
-          <FormattedMessage id="menu.account.trigger" defaultMessage="Trigger Error" />
+          <span>Trigger Error</span>
         </Menu.Item>
         <Menu.Divider />
         <Menu.Item key="logout">
           <Icon type="logout" />
-          <FormattedMessage id="menu.account.logout" defaultMessage="logout" />
+          <span>logout</span>
         </Menu.Item>
       </Menu>
     );
     const noticeData = this.getNoticeData();
-    let className = styles.right;
+    let className = "right";
     if (theme === 'dark') {
-      className = `${styles.right}  ${styles.dark}`;
+      className = 'right dark';
     }
     return (
       <div className={className}>
         <HeaderSearch
-          className={`${styles.action} ${styles.search}`}
-          placeholder={formatMessage({ id: 'component.globalHeader.search' })}
-          dataSource={[
-            formatMessage({ id: 'component.globalHeader.search.example1' }),
-            formatMessage({ id: 'component.globalHeader.search.example2' }),
-            formatMessage({ id: 'component.globalHeader.search.example3' }),
-          ]}
+          className={"action search"}
+          placeholder="站内搜索"
+          dataSource={['搜索提示一', '搜索提示二', '搜索提示三']}
           onSearch={value => {
             console.log('input', value); // eslint-disable-line
           }}
@@ -92,70 +88,62 @@ export default class GlobalHeaderRight extends PureComponent {
             console.log('enter', value); // eslint-disable-line
           }}
         />
-        <Tooltip title={formatMessage({ id: 'component.globalHeader.help' })}>
+        <Tooltip title="使用文档">
           <a
             target="_blank"
             href="https://pro.ant.design/docs/getting-started"
             rel="noopener noreferrer"
-            className={styles.action}
+            className="action"
+            title="使用文档"
           >
             <Icon type="question-circle-o" />
           </a>
         </Tooltip>
         <NoticeIcon
-          className={styles.action}
-          count={currentUser.notifyCount}
+          className="action"
+          count={userInfo.notifyCount}
           onItemClick={(item, tabProps) => {
             console.log(item, tabProps); // eslint-disable-line
-          }}
-          locale={{
-            emptyText: formatMessage({ id: 'component.noticeIcon.empty' }),
-            clear: formatMessage({ id: 'component.noticeIcon.clear' }),
           }}
           onClear={onNoticeClear}
           onPopupVisibleChange={onNoticeVisibleChange}
           loading={fetchingNotices}
           popupAlign={{ offset: [20, -16] }}
-          clearClose
         >
           <NoticeIcon.Tab
-            list={noticeData.notification}
-            title={formatMessage({ id: 'component.globalHeader.notification' })}
-            name="notification"
-            emptyText={formatMessage({ id: 'component.globalHeader.notification.empty' })}
+            list={noticeData['通知']}
+            title="通知"
+            emptyText="你已查看所有通知"
             emptyImage="https://gw.alipayobjects.com/zos/rmsportal/wAhyIChODzsoKIOBHcBk.svg"
           />
           <NoticeIcon.Tab
-            list={noticeData.message}
-            title={formatMessage({ id: 'component.globalHeader.message' })}
-            name="message"
-            emptyText={formatMessage({ id: 'component.globalHeader.message.empty' })}
+            list={noticeData['消息']}
+            title="消息"
+            emptyText="您已读完所有消息"
             emptyImage="https://gw.alipayobjects.com/zos/rmsportal/sAuJeJzSKbUmHfBQRzmZ.svg"
           />
           <NoticeIcon.Tab
-            list={noticeData.event}
-            title={formatMessage({ id: 'component.globalHeader.event' })}
-            name="event"
-            emptyText={formatMessage({ id: 'component.globalHeader.event.empty' })}
+            list={noticeData['待办']}
+            title="待办"
+            emptyText="你已完成所有待办"
             emptyImage="https://gw.alipayobjects.com/zos/rmsportal/HsIsxMZiWKrNUavQUXqx.svg"
           />
         </NoticeIcon>
-        {currentUser.name ? (
+        {userInfo.name ? (
           <Dropdown overlay={menu}>
-            <span className={`${styles.action} ${styles.account}`}>
+            <span className="action account">
               <Avatar
                 size="small"
-                className={styles.avatar}
-                src={currentUser.avatar}
+                className="avatar"
+                src={userInfo.avatar}
                 alt="avatar"
               />
-              <span className={styles.name}>{currentUser.name}</span>
+              <span className="name">{userInfo.name}</span>
             </span>
           </Dropdown>
         ) : (
           <Spin size="small" style={{ marginLeft: 8, marginRight: 8 }} />
         )}
-        <SelectLang className={styles.action} />
       </div>
     );
   }

@@ -11,6 +11,7 @@ import autoHeight from '../autoHeight';
 import styles from './index.less';
 
 /* eslint react/no-danger:0 */
+export default
 @autoHeight()
 class Pie extends Component {
   state = {
@@ -267,5 +268,3 @@ class Pie extends Component {
     );
   }
 }
-
-export default Pie;

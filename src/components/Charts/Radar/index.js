@@ -5,6 +5,7 @@ import autoHeight from '../autoHeight';
 import styles from './index.less';
 
 /* eslint react/no-danger:0 */
+export default
 @autoHeight()
 class Radar extends Component {
   state = {
@@ -180,5 +181,3 @@ class Radar extends Component {
     );
   }
 }
-
-export default Radar;
