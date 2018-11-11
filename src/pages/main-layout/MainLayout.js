@@ -154,7 +154,7 @@ export class MainLayout extends PureComponent {
             {this.getNavMenuItems(menus)}
           </Menu>
         </Layout.Sider>
-        <Layout>
+        <Layout style={{ backgroundColor: '#f0f2f5' }}>
           <Header
             handleMenuCollapse={this.handleMenuCollapseChange}
             {...this.props}
