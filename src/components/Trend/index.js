@@ -5,7 +5,7 @@ import styles from './index.less';
 
 const Trend = ({ colorful = true, reverseColor = false, flag, children, className, ...rest }) => {
   const classString = classNames(
-    styles.trendItem,
+    'trendItem-trend',
     {
       [styles.trendItemGrey]: !colorful,
       [styles.reverseColor]: reverseColor && colorful,

@@ -174,16 +174,18 @@ export class MainLayout extends PureComponent {
               {...this.props.store}
             /> */}
           <Layout.Content>
-            <Switch>
-              {this.props.routes.map((route, idx) => (
-                <Route
-                  key={idx}
-                  path={route.path}
-                  exact
-                  render={props => <route.component {...props} routes={route.routes} />}
-                />
-              ))}
-            </Switch>
+           <div>
+             <Switch>
+               {this.props.routes.map((route, idx) => (
+                 <Route
+                   key={idx}
+                   path={route.path}
+                   exact
+                   render={props => <route.component {...props} routes={route.routes} />}
+                 />
+               ))}
+             </Switch>
+           </div>
           </Layout.Content>
           {false ? <Layout.Footer>折是Footer</Layout.Footer> : null}
         </Layout>

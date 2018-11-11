@@ -21,7 +21,7 @@ const renderTotal = total => {
 
 class ChartCard extends React.PureComponent {
   renderConnet = () => {
-    const { contentHeight, title, avatar, action, total, footer, children, loading } = this.props;
+    const { contentHeight, title, avatar, action, total, footer, children, loading, contentStyle, contentFixedStyle } = this.props;
     if (loading) {
       return false;
     }
@@ -43,7 +43,7 @@ class ChartCard extends React.PureComponent {
         </div>
         {children && (
           <div className='content' style={{ height: contentHeight || 'auto' }}>
-            <div className={contentHeight && 'contentFixed'}>{children}</div>
+            <div className={contentHeight && 'contentFixed'} >{children}</div>
           </div>
         )}
         {footer && (
