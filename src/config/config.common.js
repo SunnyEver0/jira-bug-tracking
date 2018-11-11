@@ -2,7 +2,7 @@ export const commonConfig = {
   apiHost: 'http://10.16.87.146:3000/',
   menus: [
     { name: '仪表盘', key: 'dashboard', path: '/', icon: 'area-chart' },
-    { name: '应用管理', key: 'app', path: '/app', icon: 'appstore' },
+    { name: '应用管理', key: 'app', path: '/team', icon: 'appstore' },
     { name: '密钥管理', key: 'key', path: '/key', icon: 'key' },
     {
       name: '系统设置',

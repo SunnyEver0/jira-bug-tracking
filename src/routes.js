@@ -7,8 +7,8 @@ export const routes = [
     component: pages.MainLayout,
     routes: [
       { path: '/', exact: true, component: pages.HomePage },
-      { path: '/app', component: pages.AppListPage },
-      { path: '/app/edit', component: pages.AppInfoFormPage },
+      { path: '/team', component: pages.TeamPage },
+      { path: '/team/teamInfo', component: pages.TeamInfoPage },
       { path: '/key', component: pages.KeyListPage },
       { path: '', component: pages.NotFoundPage }
     ]
