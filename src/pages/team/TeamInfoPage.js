@@ -67,11 +67,11 @@ export class TeamInfoPage extends Component {
     const activeKey = currentTabKey || (offlineData && offlineData[0] && offlineData[0].name);
 
     const CustomTab = ({ data, currentTabKey: currentKey }) => (
-      <Row gutter={8} style={{ width: 138, margin: '8px 0' }}>
+      <Row gutter={18} style={{ width: 380.5, margin: '8px 0' }}>
         <Col span={12}>
           <NumberInfo
             title={data.name}
-            subTitle='123'
+            subTitle='Bug修复率'
             gap={2}
             total={`${data.cvr * 100}%`}
             theme={currentKey !== data.name && 'light'}
@@ -232,8 +232,8 @@ export class TeamInfoPage extends Component {
                     height={400}
                     data={offlineChartData}
                     titleMap={{
-                      y1: '123',
-                      y2: '456',
+                      y1: 'Bug总数',
+                      y2: 'Bug修复数',
                     }}
                   />
                 </div>
@@ -256,21 +256,10 @@ export class TeamInfoPage extends Component {
             pagination={paginationProps}
             dataSource={projectListData}
             renderItem={item => (
-              <List.Item
-                actions={[
-                  <a
-                    onClick={e => {
-                      e.preventDefault();
-                      this.showEditModal(item);
-                    }}
-                  >
-                    编辑
-                  </a>,
-                  <MoreBtn current={item} />,
-                ]}
-              >
+              <List.Item onClick={() => this.props.history.push('/team/teamInfo')}>
                 <List.Item.Meta
-                  avatar={<Avatar src={item.logo} shape="square" size="large" />}
+                  // avatar={<Avatar src={item.logo} shape="square" size="large" />}
+                  avatar={<Avatar icon="profile" shape="square" size="large" style={{ color: '#f56a00', backgroundColor: '#fde3cf' }} />}
                   title={<a href={item.href}>{item.title}</a>}
                   description={item.subDescription}
                 />

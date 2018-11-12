@@ -48,8 +48,17 @@ class TimelineChart extends React.Component {
       .transform({
         type: 'filter',
         callback: obj => {
-          const date = obj.x;
-          return date <= ds.state.end && date >= ds.state.start;
+          let date = obj.x;
+          date = date.split('-');
+          let endDate = ds.state.end.split('-');
+          let startDate = ds.state.start.split('-');
+          const datePoints = Number(date[0]) * 10 + Number(date[1]);
+          const startDatePoints = Number(startDate[0]) * 10 + Number(startDate[1]);
+          const endDatePoints = Number(endDate[0]) * 10 + Number(endDate[1]);
+
+          return datePoints <= endDatePoints && datePoints >= startDatePoints;
+
+          // return date <= ds.state.end && date >= ds.state.start;
         },
       })
       .transform({
@@ -69,10 +78,13 @@ class TimelineChart extends React.Component {
       });
 
     const timeScale = {
-      type: 'time',
-      tickInterval: 60 * 60 * 1000,
-      mask: 'HH:mm',
-      range: [0, 1],
+      // type: 'identity',
+      month: {
+        alias: '月份' // 为属性定义别名
+      },
+      // tickInterval: 60 * 60 * 1000,
+      // mask: 'HH:mm',
+      // range: [0, 1],
     };
 
     const cols = {

@@ -116,20 +116,27 @@ const salesTypeDataOffline = [
 ];
 
 const offlineData = [];
-for (let i = 0; i < 10; i += 1) {
+for (let i = 0; i < 4; i += 1) {
   offlineData.push({
-    name: `Stores ${i}`,
+    name: `第${i + 1}季度`,
     cvr: Math.ceil(Math.random() * 9) / 10,
   });
 }
 const offlineChartData = [];
-for (let i = 0; i < 20; i += 1) {
-  offlineChartData.push({
-    x: new Date().getTime() + 1000 * 60 * 30 * i,
-    y1: Math.floor(Math.random() * 100) + 10,
-    y2: Math.floor(Math.random() * 100) + 10,
-  });
+for (let i = -11; i < 13; i += 1) {
+  let year = i > 0 ? 2018 : 2017;
+  let month = i < 0 ? i + 12 : i;
+  if (i !== 0) {
+    offlineChartData.push({
+      // x: new Date().getTime() + 1000 * 60 * 30 * i,
+      x: `${year}-${Math.abs(month)}`,
+      y1: Math.floor(Math.random() * 100),
+      y2: Math.floor(Math.random() * 100),
+    });
+  }
 }
+
+console.log(offlineChartData)
 
 const radarOriginData = [
   {
