@@ -32,7 +32,7 @@ import './HomePage.less'
 
 const {TabPane} = Tabs;
 
-@inject('analysisStore')
+@inject('homeStore')
 @observer
 export class HomePage extends Component {
   constructor(props) {
@@ -42,19 +42,18 @@ export class HomePage extends Component {
       rangePickerValue: 0,
       salesType: 0
     };
-    this.pickerList = ['每年', '每月', '每周', '每日'];
-    this.salesType = ['全部渠道', '线桑', '门店']
+    this.pickerList = [];
     this.rankingListData = [];
     for (let i = 0; i < 7; i += 1) {
       this.rankingListData.push({
-        title: '看见你笑了' + i,
+        title: (i + 1) + '月',
         total: 323234,
       });
     }
   }
 
   componentDidMount() {
-    this.props.analysisStore.setAnalysisData();
+    this.props.homeStore.initHomeData();
   }
 
   isActive(type) {
@@ -74,9 +73,6 @@ export class HomePage extends Component {
   }
 
   render() {
-
-    console.log(this.props, '---props')
-
     const radarOriginData = [
       {
         name: '个人',
@@ -107,11 +103,12 @@ export class HomePage extends Component {
 
     const radarData = [];
     const radarTitleMap = {
-      ref: '引用',
-      koubei: '口碑',
-      output: '产量',
-      contribute: '贡献',
-      hot: '热度',
+      ref: 'UI Bug',
+      koubei: 'UI Function',
+      output: 'xx1x',
+      contribute: 'x2xx',
+      hot: 'xxx3',
+      hots: 'xx4x'
     };
     radarOriginData.forEach((item) => {
       Object.keys(item).forEach((key) => {
@@ -131,7 +128,7 @@ export class HomePage extends Component {
       sm: 12,
       md: 12,
       lg: 12,
-      xl: 6,
+      xl: 8,
       style: {marginBottom: 24}
     };
 
@@ -184,7 +181,7 @@ export class HomePage extends Component {
     );
 
 
-    let {visitData} = this.props.analysisStore.chartData;
+    let {visitData} = this.props.homeStore.chartData;
     if (visitData && visitData.length) {
       // mobx的obseverable数组，Array.isArray返回为false，需重新转换为真正的数组
       visitData = visitData.slice();
@@ -205,10 +202,10 @@ export class HomePage extends Component {
             <Col {...topColResponsiveProps}>
               <ChartCard
                 bordered={false}
-                title={'总销售量'}
+                title={'Bug总数'}
                 action={
                   <Tooltip
-                    title={'产品分析'}
+                    title={'Bug总数'}
                   >
                     <Icon type="info-circle-o"/>
                   </Tooltip>
@@ -217,18 +214,18 @@ export class HomePage extends Component {
                 total={() => <div style={{lineHeight: "38px"}}>126560</div>}
                 footer={
                   <Field
-                    label={'日销售量'}
+                    label={'日新增'}
                     value={`￥${numeral(12423).format('0,0')}`}
                   />
                 }
                 contentHeight={46}
               >
                 <Trend flag="up" style={{marginRight: 16}}>
-                  周同比
+                  年新增
                   <span className={"trendText"}>12%</span>
                 </Trend>
                 <Trend flag="down">
-                  日同比
+                  月新增
                   <span className={"trendText"}>11%</span>
                 </Trend>
               </ChartCard>
@@ -237,10 +234,10 @@ export class HomePage extends Component {
               <ChartCard
                 bordered={false}
                 loading={loading}
-                title={'访问量'}
+                title={'Online Bug'}
                 action={
                   <Tooltip
-                    title={'访问量'}
+                    title={'Online Bug'}
                   >
                     <Icon type="info-circle-o"/>
                   </Tooltip>
@@ -248,7 +245,7 @@ export class HomePage extends Component {
                 total={numeral(8846).format('0,0')}
                 footer={
                   <Field
-                    label={'日访问量'}
+                    label={'当日 Online Bug'}
                     value={numeral(1234).format('0,0')}
                   />
                 }
@@ -261,10 +258,10 @@ export class HomePage extends Component {
               <ChartCard
                 bordered={false}
                 loading={loading}
-                title={'支付笔数'}
+                title={'Bug'}
                 action={
                   <Tooltip
-                    title={'支付笔数'}
+                    title={'Bug'}
                   >
                     <Icon type="info-circle-o"/>
                   </Tooltip>
@@ -272,8 +269,8 @@ export class HomePage extends Component {
                 total={numeral(6560).format('0,0')}
                 footer={
                   <Field
-                    label={'转化率'}
-                    value="60%"
+                    label={'当日bug量'}
+                    value={100}
                   />
                 }
                 contentHeight={46}
@@ -283,43 +280,13 @@ export class HomePage extends Component {
                 </div>
               </ChartCard>
             </Col>
-            <Col {...topColResponsiveProps}>
-              <ChartCard
-                loading={loading}
-                bordered={false}
-                title={'运营活动效果'}
-                action={
-                  <Tooltip
-                    title={'运营活动效果'}
-                  >
-                    <Icon type="info-circle-o"/>
-                  </Tooltip>
-                }
-                total="78%"
-                footer={
-                  <div style={{whiteSpace: 'nowrap', overflow: 'hidden'}}>
-                    <Trend flag="up" style={{marginRight: 16}}>
-                      周同比
-                      <span className={"trendText"}>12%</span>
-                    </Trend>
-                    <Trend flag="down">
-                      日同比
-                      <span className={"trendText"}>11%</span>
-                    </Trend>
-                  </div>
-                }
-                contentHeight={46}
-              >
-                <MiniProgress percent={78} strokeWidth={8} target={80} color="#13C2C2"/>
-              </ChartCard>
-            </Col>
           </Row>
         </div>
         <Card loading={loading} bordered={false} bodyStyle={{padding: 0}}>
           <div className={"salesCard"}>
             <Tabs tabBarExtraContent={salesExtra} size="large" tabBarStyle={{marginBottom: 24}}>
               <TabPane
-                tab={'买家'}
+                tab={'各月bug产出'}
                 key="sales"
               >
                 <Row className={"ixxixi"}>
@@ -327,7 +294,7 @@ export class HomePage extends Component {
                     <div className={"salesBar"}>
                       <Bar
                         height={295}
-                        title={"销售额"}
+                        title={"Bug数量"}
                         data={salesData}
                       />
                     </div>
@@ -335,7 +302,7 @@ export class HomePage extends Component {
                   <Col xl={8} lg={12} md={12} sm={24} xs={24}>
                     <div className={"salesRank"}>
                       <h4 className={"rankingTitle"}>
-                        门店销售额排名
+                        各月Bug产出排行
                       </h4>
                       <ul className={"rankingList"}>
                         {this.rankingListData.map((item, i) => (
@@ -366,34 +333,12 @@ export class HomePage extends Component {
 
         <Row gutter={24}>
           <Col xl={12} lg={24} md={24} sm={24} xs={24}>
-            <div>
-
-            </div>
-
             <Card
               loading={loading}
               className={"salesCard"}
               bordered={false}
-              title={'销售趋势分析'}
+              title={'Bug类型占比'}
               bodyStyle={{padding: 24}}
-              extra={
-                <div className={"salesCardExtra"}>
-                  {iconGroup}
-                  <div className={"salesTypeRadio"}>
-                    <Radio.Group value={this.state.salesType} onChange={this.handleChangeSalesType}>
-                      <Radio.Button value={0}>
-                        {this.salesType[0]}
-                      </Radio.Button>
-                      <Radio.Button value={1}>
-                        {this.salesType[1]}
-                      </Radio.Button>
-                      <Radio.Button value={2}>
-                        {this.salesType[2]}
-                      </Radio.Button>
-                    </Radio.Group>
-                  </div>
-                </div>
-              }
               style={{marginTop: 24, minHeight: 509}}
             >
               <ChartCard title="数据比例">
@@ -411,34 +356,16 @@ export class HomePage extends Component {
               loading={loading}
               className={"salesCard"}
               bordered={false}
-              title={'销售趋势分析'}
+              title={'Bug状态占比'}
               bodyStyle={{padding: 24}}
-              extra={
-                <div className={"salesCardExtra"}>
-                  {iconGroup}
-                  <div className={"salesTypeRadio"}>
-                    <Radio.Group value={this.state.salesType} onChange={this.handleChangeSalesType}>
-                      <Radio.Button value={0}>
-                        {this.salesType[0]}
-                      </Radio.Button>
-                      <Radio.Button value={1}>
-                        {this.salesType[1]}
-                      </Radio.Button>
-                      <Radio.Button value={2}>
-                        {this.salesType[2]}
-                      </Radio.Button>
-                    </Radio.Group>
-                  </div>
-                </div>
-              }
               style={{marginTop: 24, minHeight: 509}}
             >
               <h4 style={{marginTop: 8, marginBottom: 32}}>
-                销售额
+                数据比例
               </h4>
               <Pie
                 hasLegend
-                subTitle={"默认销售额"}
+                subTitle={"Bug数量"}
                 total={() => <div>1000000</div>}
                 data={salesPieData}
                 valueFormat={value => <div>100000</div>}

@@ -13,6 +13,7 @@ const request = (method, route, data, config = {}) => {
   });
   options.headers = options.headers || defaultHeaders;
   return new Promise((resolve, reject) => {
+    console.log(BASE_URL + route, options, '---BASE_URL + route, options')
     fetch(BASE_URL + route, options)
       .then(response => response.json())
       .then(data => {

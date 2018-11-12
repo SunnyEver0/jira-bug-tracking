@@ -1,16 +1,16 @@
-import { AnalysisStore } from './AnalysisStore';
+import { HomeStore } from './HomeStore';
 import { AppListStore } from './AppListStore';
 import { AppStore } from './AppStore';
 import { TeamStore } from "./TeamStore";
 
 const appStore = new AppStore();
-const analysisStore = new AnalysisStore();
+const homeStore = new HomeStore();
 const appListStore = new AppListStore();
 const teamStore = new TeamStore();
 
 export {
   appStore,
-  analysisStore,
+  homeStore,
   appListStore,
   teamStore
 }
