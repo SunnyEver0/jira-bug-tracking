@@ -8,6 +8,7 @@ import { Pie, TimelineChart } from '../../components/charts';
 import NumberInfo from '../../components/numberInfo';
 import Result from '../../components/result';
 import { util } from '../../utils';
+import { Link} from 'react-router-dom';
 
 const { TabPane } = Tabs;
 const FormItem = Form.Item;
@@ -17,7 +18,7 @@ const SelectOption = Select.Option;
 const { Search, TextArea } = Input;
 
 @Form.create()
-@inject('analysisStore', 'teamStore')
+@inject('homeStore', 'teamStore')
 @observer
 export class TeamInfoPage extends Component {
   constructor(props) {
@@ -37,7 +38,7 @@ export class TeamInfoPage extends Component {
   };
 
   componentDidMount() {
-    this.props.analysisStore.setAnalysisData();
+    this.props.homeStore.initHomeData();
     this.props.teamStore.setTeamProjectData();
   }
 
@@ -56,9 +57,12 @@ export class TeamInfoPage extends Component {
   };
 
   render() {
-    const { propsLoading, analysisStore, teamStore, form: { getFieldDecorator } } = this.props;
+    const { propsLoading, homeStore, teamStore, form: { getFieldDecorator } } = this.props;
     const { stateLoading, currentTabKey, current, done, visible } = this.state;
-    let { offlineData, offlineChartData } = analysisStore.chartData;
+    const loading = propsLoading || stateLoading;
+    let { offlineData, offlineChartData } = homeStore.chartData;
+    if (offlineData && offlineData.length > 0) offlineData = offlineData.slice();
+    if (offlineChartData && offlineChartData.length > 0) offlineChartData = offlineChartData.slice();
     let { projectListData } = teamStore;
     const loading = propsLoading || stateLoading;
     offlineData = util.formatMobxArray(offlineData);
@@ -256,8 +260,10 @@ export class TeamInfoPage extends Component {
             pagination={paginationProps}
             dataSource={projectListData}
             renderItem={item => (
-              <List.Item onClick={() => this.props.history.push('/team/teamInfo')}>
+              <List.Item>
                 <List.Item.Meta
+                  avatar={<Avatar src={item.logo} shape="square" size="large" />}
+                  title={<Link to={`/itemDetail/${item.title}`} style={{ backgroundColor: 'red' }}>{item.title}</Link>}
                   // avatar={<Avatar src={item.logo} shape="square" size="large" />}
                   avatar={<Avatar icon="profile" shape="square" size="large" style={{ color: '#f56a00', backgroundColor: '#fde3cf' }} />}
                   title={<a href={item.href}>{item.title}</a>}

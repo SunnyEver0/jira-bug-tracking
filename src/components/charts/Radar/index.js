@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Chart, Tooltip, Geom, Coord, Axis } from 'bizcharts';
 import { Row, Col } from 'antd';
 import autoHeight from '../autoHeight';
-import styles from './index.less';
+import './index.less';
 
 /* eslint react/no-danger:0 */
 export default
@@ -111,7 +111,7 @@ class Radar extends Component {
     const chartHeight = height - (hasLegend ? 80 : 22);
 
     return (
-      <div className={styles.radar} style={{ height }}>
+      <div className={"radar-radar"} style={{ height }}>
         {title && <h4>{title}</h4>}
         <Chart
           scale={scale}
@@ -154,17 +154,17 @@ class Radar extends Component {
           />
         </Chart>
         {hasLegend && (
-          <Row className={styles.legend}>
+          <Row className={"radar-legend"}>
             {legendData.map((item, i) => (
               <Col
                 span={24 / legendData.length}
                 key={item.name}
                 onClick={() => this.handleLegendClick(item, i)}
               >
-                <div className={styles.legendItem}>
+                <div className={"radar-legendItem"}>
                   <p>
                     <span
-                      className={styles.dot}
+                      className={"radar-dot"}
                       style={{
                         backgroundColor: !item.checked ? '#aaa' : item.color,
                       }}

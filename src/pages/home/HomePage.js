@@ -1,4 +1,4 @@
-import { inject, observer } from 'mobx-react';
+import {inject, observer} from 'mobx-react';
 import numeral from 'numeral';
 
 import {
@@ -23,98 +23,209 @@ import {
   Bar,
   Pie,
   TimelineChart,
+  Radar
 } from '../../components/charts';
 import Trend from '../../components/Trend';
-import React, { Component } from 'react';
-import { GridContent } from '../../components/PageHeaderWrapper/GridContent';
-import styles from './HomePage.less'
-const { TabPane } = Tabs;
+import React, {Component} from 'react';
+import {GridContent} from '../../components/PageHeaderWrapper/GridContent';
+import './HomePage.less'
 
-@inject('analysisStore')
+const {TabPane} = Tabs;
+
+@inject('homeStore')
 @observer
 export class HomePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: false
+      loading: false,
+      rangePickerValue: 0,
+      salesType: 0
     };
+    this.pickerList = [];
+    this.rankingListData = [];
+    for (let i = 0; i < 7; i += 1) {
+      this.rankingListData.push({
+        title: (i + 1) + '月',
+        total: 323234,
+      });
+    }
   }
 
   componentDidMount() {
-    this.props.analysisStore.setAnalysisData();
+    this.props.homeStore.initHomeData();
+  }
+
+  isActive(type) {
+    if (type === this.state.rangePickerValue) return 'currentDate'
+  }
+
+  selectDate = index => {
+    this.setState({
+      rangePickerValue: index
+    })
+  }
+
+  handleChangeSalesType = e => {
+    this.setState({
+      salesType: e.target.value,
+    });
   }
 
   render() {
+    const radarOriginData = [
+      {
+        name: '个人',
+        ref: 10,
+        koubei: 8,
+        output: 4,
+        contribute: 5,
+        hot: 7,
+      },
+      {
+        name: '团队',
+        ref: 3,
+        koubei: 9,
+        output: 6,
+        contribute: 3,
+        hot: 1,
+      },
+      {
+        name: '部门',
+        ref: 4,
+        koubei: 1,
+        output: 6,
+        contribute: 5,
+        hot: 7,
+      },
+    ];
+
+
+    const radarData = [];
+    const radarTitleMap = {
+      ref: 'UI Bug',
+      koubei: 'UI Function',
+      output: 'xx1x',
+      contribute: 'x2xx',
+      hot: 'xxx3',
+      hots: 'xx4x'
+    };
+    radarOriginData.forEach((item) => {
+      Object.keys(item).forEach((key) => {
+        if (key !== 'name') {
+          radarData.push({
+            name: item.name,
+            label: radarTitleMap[key],
+            value: item[key],
+          });
+        }
+      });
+    });
+
 
     const topColResponsiveProps = {
       xs: 24,
       sm: 12,
       md: 12,
       lg: 12,
-      xl: 6,
-      style: { marginBottom: 24 }
+      xl: 8,
+      style: {marginBottom: 24}
     };
 
-    const { propsLoading } = this.props;
-    const { stateLoading } = this.state;
+    const salesPieData = [
+      {x: "家用电器", y: 4544},
+      {x: "食用酒水", y: 3321},
+      {x: "个护健康", y: 3113},
+      {x: "服饰箱包", y: 2341},
+      {x: "母婴产品", y: 1231},
+      {x: "其他", y: 1231}
+    ]
+
+    const menu = (
+      <Menu>
+        <Menu.Item>操作一</Menu.Item>
+        <Menu.Item>操作二</Menu.Item>
+      </Menu>
+    );
+
+
+    const salesData = [
+      {x: "1月", y: 1117},
+      {x: "2月", y: 861},
+      {x: "3月", y: 936},
+      {x: "4月", y: 684},
+      {x: "5月", y: 1025},
+      {x: "6月", y: 583},
+      {x: "7月", y: 837},
+      {x: "8月", y: 560},
+      {x: "9月", y: 655},
+      {x: "10月", y: 258},
+      {x: "11月", y: 402},
+      {x: "12月", y: 364}
+    ]
+
+    const {propsLoading} = this.props;
+    const {stateLoading} = this.state;
     const loading = propsLoading || stateLoading;
 
     const salesExtra = (
       <div className={'salesExtraWrap'}>
-        <div className={styles.salesExtra}>
-          <a className={this.isActive('today')} onClick={() => this.selectDate('today')}>
-            每天
-          </a>
-          <a className={this.isActive('week')} onClick={() => this.selectDate('week')}>
-            每周
-          </a>
-          <a className={this.isActive('month')} onClick={() => this.selectDate('month')}>
-            每月
-          </a>
-          <a className={this.isActive('year')} onClick={() => this.selectDate('year')}>
-            每年
-          </a>
+        <div className={"salesExtra"}>
+          {this.pickerList.map((type, index) => (
+            <a className={this.isActive(index)} onClick={() => this.selectDate(index)} key={index}>
+              {type}
+            </a>
+          ))}
         </div>
       </div>
     );
 
 
-    let { visitData } = this.props.analysisStore.chartData;
+    let {visitData} = this.props.homeStore.chartData;
     if (visitData && visitData.length) {
       // mobx的obseverable数组，Array.isArray返回为false，需重新转换为真正的数组
       visitData = visitData.slice();
     }
+
+    const iconGroup = (
+      <span className={"iconGroup"}>
+        <Dropdown overlay={menu} placement="bottomRight">
+          <Icon type="ellipsis"/>
+        </Dropdown>
+      </span>
+    );
+
     return (
       <GridContent>
-        <div style={{ marginTop: "24px" }}>
+        <div style={{marginTop: "24px"}}>
           <Row gutter={24}>
             <Col {...topColResponsiveProps}>
               <ChartCard
                 bordered={false}
-                title={'总销售量'}
+                title={'Bug总数'}
                 action={
                   <Tooltip
-                    title={'产品分析'}
+                    title={'Bug总数'}
                   >
-                    <Icon type="info-circle-o" />
+                    <Icon type="info-circle-o"/>
                   </Tooltip>
                 }
                 loading={loading}
-                total={() => <div style={{ lineHeight: "38px" }}>126560</div>}
+                total={() => <div style={{lineHeight: "38px"}}>126560</div>}
                 footer={
                   <Field
-                    label={'日销售量'}
+                    label={'日新增'}
                     value={`￥${numeral(12423).format('0,0')}`}
                   />
                 }
                 contentHeight={46}
               >
-                <Trend flag="up" style={{ marginRight: 16 }}>
-                  周同比
+                <Trend flag="up" style={{marginRight: 16}}>
+                  年新增
                   <span className={"trendText"}>12%</span>
                 </Trend>
                 <Trend flag="down">
-                  日同比
+                  月新增
                   <span className={"trendText"}>11%</span>
                 </Trend>
               </ChartCard>
@@ -123,171 +234,92 @@ export class HomePage extends Component {
               <ChartCard
                 bordered={false}
                 loading={loading}
-                title={'访问量'}
+                title={'Online Bug'}
                 action={
                   <Tooltip
-                    title={'访问量'}
+                    title={'Online Bug'}
                   >
-                    <Icon type="info-circle-o" />
+                    <Icon type="info-circle-o"/>
                   </Tooltip>
                 }
                 total={numeral(8846).format('0,0')}
                 footer={
                   <Field
-                    label={'日访问量'}
+                    label={'当日 Online Bug'}
                     value={numeral(1234).format('0,0')}
                   />
                 }
                 contentHeight={46}
-                contentStyle={{ height: "77px" }}
               >
-                <MiniArea color="#975FE4" data={visitData} />
+                <MiniArea color="#975FE4" data={visitData}/>
               </ChartCard>
             </Col>
             <Col {...topColResponsiveProps}>
               <ChartCard
                 bordered={false}
                 loading={loading}
-                title={'支付笔数'}
+                title={'Bug'}
                 action={
                   <Tooltip
-                    title={'支付笔数'}
+                    title={'Bug'}
                   >
-                    <Icon type="info-circle-o" />
+                    <Icon type="info-circle-o"/>
                   </Tooltip>
                 }
                 total={numeral(6560).format('0,0')}
                 footer={
                   <Field
-                    label={'转化率'}
-                    value="60%"
+                    label={'当日bug量'}
+                    value={100}
                   />
                 }
                 contentHeight={46}
               >
-                <div style={{ position: 'relative', top: '-31px' }}>
-                  <MiniBar data={visitData} />
+                <div style={{position: 'relative', top: '-31px'}}>
+                  <MiniBar data={visitData}/>
                 </div>
-              </ChartCard>
-            </Col>
-            <Col {...topColResponsiveProps}>
-              <ChartCard
-                loading={loading}
-                bordered={false}
-                title={'运营活动效果'}
-                action={
-                  <Tooltip
-                    title={'运营活动效果'}
-                  >
-                    <Icon type="info-circle-o" />
-                  </Tooltip>
-                }
-                total="78%"
-                footer={
-                  <div style={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>
-                    <Trend flag="up" style={{ marginRight: 16 }}>
-                      周同比
-                      <span className={"trendText"}>12%</span>
-                    </Trend>
-                    <Trend flag="down">
-                      日同比
-                      <span className={"trendText"}>11%</span>
-                    </Trend>
-                  </div>
-                }
-                contentHeight={46}
-              >
-                <MiniProgress percent={78} strokeWidth={8} target={80} color="#13C2C2" />
               </ChartCard>
             </Col>
           </Row>
         </div>
-        <Card loading={loading} bordered={false} bodyStyle={{ padding: 0 }}>
+        <Card loading={loading} bordered={false} bodyStyle={{padding: 0}}>
           <div className={"salesCard"}>
-            <Tabs tabBarExtraContent={salesExtra} size="large" tabBarStyle={{ marginBottom: 24 }}>
+            <Tabs tabBarExtraContent={salesExtra} size="large" tabBarStyle={{marginBottom: 24}}>
               <TabPane
-                tab={'买家'}
+                tab={'各月bug产出'}
                 key="sales"
               >
-                <Row>
+                <Row className={"ixxixi"}>
                   <Col xl={16} lg={12} md={12} sm={24} xs={24}>
-                    <div className={styles.salesBar}>
+                    <div className={"salesBar"}>
                       <Bar
                         height={295}
-                        title={"销售额"}
+                        title={"Bug数量"}
                         data={salesData}
                       />
                     </div>
                   </Col>
                   <Col xl={8} lg={12} md={12} sm={24} xs={24}>
-                    <div className={styles.salesRank}>
-                      <h4 className={styles.rankingTitle}>
-                        门店销售额排名
+                    <div className={"salesRank"}>
+                      <h4 className={"rankingTitle"}>
+                        各月Bug产出排行
                       </h4>
-                      <ul className={styles.rankingList}>
+                      <ul className={"rankingList"}>
                         {this.rankingListData.map((item, i) => (
                           <li key={item.title}>
                             <span
-                              className={`${styles.rankingItemNumber} ${
-                                i < 3 ? styles.active : ''
+                              className={`${"rankingItemNumber"} ${
+                                i < 3 ? "home-sale-active" : ''
                                 }`}
                             >
                               {i + 1}
                             </span>
-                            <span className={styles.rankingItemTitle} title={item.title}>
+                            <span className={"rankingItemTitle"} title={item.title}>
                               {item.title}
                             </span>
-                            <span className={styles.rankingItemValue}>
+                            <span className={"rankingItemValue"}>
                               {numeral(item.total).format('0,0')}
                             </span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </Col>
-                </Row>
-              </TabPane>
-              <TabPane
-                tab={<FormattedMessage id="app.analysis.visits" defaultMessage="Visits" />}
-                key="views"
-              >
-                <Row>
-                  <Col xl={16} lg={12} md={12} sm={24} xs={24}>
-                    <div className={styles.salesBar}>
-                      <Bar
-                        height={292}
-                        title={
-                          <FormattedMessage
-                            id="app.analysis.visits-trend"
-                            defaultMessage="Visits Trend"
-                          />
-                        }
-                        data={salesData}
-                      />
-                    </div>
-                  </Col>
-                  <Col xl={8} lg={12} md={12} sm={24} xs={24}>
-                    <div className={styles.salesRank}>
-                      <h4 className={styles.rankingTitle}>
-                        <FormattedMessage
-                          id="app.analysis.visits-ranking"
-                          defaultMessage="Visits Ranking"
-                        />
-                      </h4>
-                      <ul className={styles.rankingList}>
-                        {this.rankingListData.map((item, i) => (
-                          <li key={item.title}>
-                            <span
-                              className={`${styles.rankingItemNumber} ${
-                                i < 3 ? styles.active : ''
-                                }`}
-                            >
-                              {i + 1}
-                            </span>
-                            <span className={styles.rankingItemTitle} title={item.title}>
-                              {item.title}
-                            </span>
-                            <span>{numeral(item.total).format('0,0')}</span>
                           </li>
                         ))}
                       </ul>
@@ -298,7 +330,55 @@ export class HomePage extends Component {
             </Tabs>
           </div>
         </Card>
+
+        <Row gutter={24}>
+          <Col xl={12} lg={24} md={24} sm={24} xs={24}>
+            <Card
+              loading={loading}
+              className={"salesCard"}
+              bordered={false}
+              title={'Bug类型占比'}
+              bodyStyle={{padding: 24}}
+              style={{marginTop: 24, minHeight: 509}}
+            >
+              <ChartCard title="数据比例">
+                <Radar
+                  hasLegend
+                  height={286}
+                  data={radarData}
+                />
+              </ChartCard>
+            </Card>
+
+          </Col>
+          <Col xl={12} lg={24} md={24} sm={24} xs={24}>
+            <Card
+              loading={loading}
+              className={"salesCard"}
+              bordered={false}
+              title={'Bug状态占比'}
+              bodyStyle={{padding: 24}}
+              style={{marginTop: 24, minHeight: 509}}
+            >
+              <h4 style={{marginTop: 8, marginBottom: 32}}>
+                数据比例
+              </h4>
+              <Pie
+                hasLegend
+                subTitle={"Bug数量"}
+                total={() => <div>1000000</div>}
+                data={salesPieData}
+                valueFormat={value => <div>100000</div>}
+                height={248}
+                lineWidth={4}
+              />
+            </Card>
+          </Col>
+        </Row>
       </GridContent>
     );
   }
 }
+
+
+

@@ -143,7 +143,7 @@ export class MainLayout extends PureComponent {
       <Layout className="page-layout">
         <Layout.Sider collapsed={this.state.menuCollapsed} onCollapse={this.handleMenuCollapseChange}>
           <div className="logo-div text-center">
-            <h2 title="React Native Hotfix Platform">{this.state.menuCollapsed ? 'HP' : 'Hot Push'}</h2>
+            <h2 title="React Native Hotfix Platform">{this.state.menuCollapsed ? 'HP' : 'Bug Smart'}</h2>
           </div>
           <Menu
             theme="dark"

@@ -10,6 +10,7 @@ export const routes = [
       { path: '/team', component: pages.TeamPage },
       { path: '/team/teamInfo', component: pages.TeamInfoPage },
       { path: '/key', component: pages.KeyListPage },
+      { path: '/itemDetail/:item', component: pages.TeamDetail },
       { path: '', component: pages.NotFoundPage }
     ]
   }

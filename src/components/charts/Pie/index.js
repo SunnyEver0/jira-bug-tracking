@@ -8,7 +8,7 @@ import Debounce from 'lodash-decorators/debounce';
 import Bind from 'lodash-decorators/bind';
 import autoHeight from '../autoHeight';
 
-import styles from './index.less';
+import './index.less';
 
 /* eslint react/no-danger:0 */
 export default
@@ -136,9 +136,9 @@ class Pie extends Component {
     } = this.props;
 
     const { legendData, legendBlock } = this.state;
-    const pieClassName = classNames(styles.pie, className, {
-      [styles.hasLegend]: !!hasLegend,
-      [styles.legendBlock]: legendBlock,
+    const pieClassName = classNames("pie-pie", className, {
+      ["pie-hasLegend"]: !!hasLegend,
+      ["pie-legendBlock"]: legendBlock,
     });
 
     const {
@@ -210,7 +210,7 @@ class Pie extends Component {
     return (
       <div ref={this.handleRoot} className={pieClassName} style={style}>
         <ReactFitText maxFontSize={25}>
-          <div className={styles.chart}>
+          <div className={"pie-chart"}>
             <Chart
               scale={scale}
               height={height}
@@ -233,7 +233,7 @@ class Pie extends Component {
             </Chart>
 
             {(subTitle || total) && (
-              <div className={styles.total}>
+              <div className={"pie-total"}>
                 {subTitle && <h4 className="pie-sub-title">{subTitle}</h4>}
                 {/* eslint-disable-next-line */}
                 {total && (
@@ -245,21 +245,21 @@ class Pie extends Component {
         </ReactFitText>
 
         {hasLegend && (
-          <ul className={styles.legend}>
+          <ul className={"pie-legend"}>
             {legendData.map((item, i) => (
               <li key={item.x} onClick={() => this.handleLegendClick(item, i)}>
                 <span
-                  className={styles.dot}
+                  className={"pie-dot"}
                   style={{
                     backgroundColor: !item.checked ? '#aaa' : item.color,
                   }}
                 />
-                <span className={styles.legendTitle}>{item.x}</span>
+                <span className={"pie-legendTitle"}>{item.x}</span>
                 <Divider type="vertical" />
-                <span className={styles.percent}>
+                <span className={"pie-percent"}>
                   {`${(Number.isNaN(item.percent) ? 0 : item.percent * 100).toFixed(2)}%`}
                 </span>
-                <span className={styles.value}>{valueFormat ? valueFormat(item.y) : item.y}</span>
+                <span className={"pie-value"}>{valueFormat ? valueFormat(item.y) : item.y}</span>
               </li>
             ))}
           </ul>
