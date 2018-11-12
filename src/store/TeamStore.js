@@ -4,6 +4,9 @@ import { teamService } from '../services';
 export class TeamStore {
 
   @observable
+  mockData = [];
+
+  @observable
   teamListData = [];
   /**
    * projectList Data
@@ -50,6 +53,16 @@ export class TeamStore {
       .then(data => {
         if (data) {
           this.teamBugInfo = data;
+        }
+      })
+      .catch(err => console.log(err));
+  }
+  @action
+  initMockData() {
+    return teamService.initMockData()
+      .then(data => {
+        if (data) {
+          this.mockData = data;
         }
       })
       .catch(err => console.log(err));

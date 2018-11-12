@@ -8,6 +8,10 @@ export const teamService = {
 
   getTeamBugInfo() {
     return ajax.get('api/teamBugInfo');
-  }
+  },
 
+  initMockData() {
+    return ajax.get('api/analysis')
+  }
 };
+g

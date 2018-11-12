@@ -3,12 +3,12 @@ import './TeamInfoPage.less';
 import { Card, Tabs, Col, Avatar, Row, List, Button, Dropdown, Menu, Modal, Icon, Radio, Input, Form, Progress, DatePicker, Select } from 'antd';
 import { inject, observer } from 'mobx-react';
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { Pie, TimelineChart } from '../../components/charts';
 import NumberInfo from '../../components/numberInfo';
 import Result from '../../components/result';
 import { util } from '../../utils';
-import { Link} from 'react-router-dom';
 
 const { TabPane } = Tabs;
 const FormItem = Form.Item;
@@ -38,7 +38,7 @@ export class TeamInfoPage extends Component {
   };
 
   componentDidMount() {
-    this.props.homeStore.initHomeData();
+    this.props.teamStore.initMockData();
     this.props.teamStore.setTeamProjectData();
   }
 
@@ -57,12 +57,9 @@ export class TeamInfoPage extends Component {
   };
 
   render() {
-    const { propsLoading, homeStore, teamStore, form: { getFieldDecorator } } = this.props;
+    const { propsLoading, teamStore, form: { getFieldDecorator } } = this.props;
     const { stateLoading, currentTabKey, current, done, visible } = this.state;
-    const loading = propsLoading || stateLoading;
-    let { offlineData, offlineChartData } = homeStore.chartData;
-    if (offlineData && offlineData.length > 0) offlineData = offlineData.slice();
-    if (offlineChartData && offlineChartData.length > 0) offlineChartData = offlineChartData.slice();
+    let { offlineData, offlineChartData } = teamStore.mockData;
     let { projectListData } = teamStore;
     const loading = propsLoading || stateLoading;
     offlineData = util.formatMobxArray(offlineData);
@@ -262,11 +259,9 @@ export class TeamInfoPage extends Component {
             renderItem={item => (
               <List.Item>
                 <List.Item.Meta
-                  avatar={<Avatar src={item.logo} shape="square" size="large" />}
-                  title={<Link to={`/itemDetail/${item.title}`} style={{ backgroundColor: 'red' }}>{item.title}</Link>}
                   // avatar={<Avatar src={item.logo} shape="square" size="large" />}
                   avatar={<Avatar icon="profile" shape="square" size="large" style={{ color: '#f56a00', backgroundColor: '#fde3cf' }} />}
-                  title={<a href={item.href}>{item.title}</a>}
+                  title={<Link to={`/itemDetail/${item.title}`}>{item.title}</Link>}
                   description={item.subDescription}
                 />
                 <ListContent data={item} />

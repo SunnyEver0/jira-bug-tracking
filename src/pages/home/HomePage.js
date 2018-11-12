@@ -29,7 +29,7 @@ import Trend from '../../components/Trend';
 import React, {Component} from 'react';
 import {GridContent} from '../../components/PageHeaderWrapper/GridContent';
 import './HomePage.less'
-import { utils } from '../../utils/util'
+import { util } from '../../utils'
 
 const {TabPane} = Tabs;
 
@@ -275,7 +275,7 @@ export class HomePage extends Component {
                       <Bar
                         height={295}
                         title={"Bug数量"}
-                        data={utils.transformData(this.props.homeStore.chartData.bugMonthList)}
+                        data={util.transformData(this.props.homeStore.chartData.bugMonthList)}
                       />
                     </div>
                   </Col>
