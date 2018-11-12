@@ -5,7 +5,7 @@ import { inject, observer } from 'mobx-react';
 import React, { PureComponent } from 'react';
 
 
-@inject('appListStore')
+@inject('teamStore')
 @observer
 export class TeamPage extends PureComponent {
   state = {
@@ -13,12 +13,12 @@ export class TeamPage extends PureComponent {
   };
 
   componentDidMount() {
-    this.props.appListStore.getAppListData();
+    this.props.teamStore.setTeamList();
   }
 
   handleSearch() {}
   render() {
-    const list = this.props.appListStore.appList.slice();
+    const list = this.props.teamStore.teamListData.slice();
     return (
       <div>
         <br />

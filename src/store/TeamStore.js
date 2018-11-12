@@ -2,13 +2,33 @@ import { action, observable } from 'mobx';
 import { teamService } from '../services';
 
 export class TeamStore {
+
+  @observable
+  teamListData = [];
   /**
-   * 用户是否已登录
+   * projectList Data
    */
   @observable
   projectListData = [];
+
+  @observable
+  teamBugInfo = [];
   /**
-   * 从后端取分析数据
+   * 获取所有团队信息
+   */
+  @action
+  setTeamList() {
+    return teamService.getTeamSubjectData()
+      .then(data => {
+        if (data) {
+          this.teamListData = data;
+        }
+      })
+      .catch(err => console.log(err));
+  }
+
+  /**
+   * 获取Team下所有Project
    */
   @action
   setTeamProjectData() {
@@ -16,6 +36,20 @@ export class TeamStore {
       .then(data => {
         if (data) {
           this.projectListData = data;
+        }
+      })
+      .catch(err => console.log(err));
+  }
+
+  /**
+   * 获取Team下所有bug信息
+   */
+  @action
+  setTeamBugInfo() {
+    return teamService.getTeamBugInfo()
+      .then(data => {
+        if (data) {
+          this.teamBugInfo = data;
         }
       })
       .catch(err => console.log(err));

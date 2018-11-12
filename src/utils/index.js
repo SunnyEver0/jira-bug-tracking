@@ -1,4 +1,5 @@
 import { ajax } from './ajax';
 import { bindSelf } from './bindSelf';
+import { util } from './utils';
 
-export { bindSelf, ajax };
+export { ajax, bindSelf, util };

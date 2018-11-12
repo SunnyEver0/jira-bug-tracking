@@ -1,14 +1,13 @@
 import './TeamInfoPage.less';
-import '../'
 
 import { Card, Tabs, Col, Avatar, Row, List, Button, Dropdown, Menu, Modal, Icon, Radio, Input, Form, Progress, DatePicker, Select } from 'antd';
 import { inject, observer } from 'mobx-react';
 import React, { Component } from 'react';
-import { findDOMNode } from 'react-dom';
-import { Pie, TimelineChart, MiniArea } from '../../components/charts';
+import moment from 'moment';
+import { Pie, TimelineChart } from '../../components/charts';
 import NumberInfo from '../../components/numberInfo';
 import Result from '../../components/result';
-import moment from 'moment';
+import { util } from '../../utils';
 
 const { TabPane } = Tabs;
 const FormItem = Form.Item;
@@ -59,15 +58,13 @@ export class TeamInfoPage extends Component {
   render() {
     const { propsLoading, analysisStore, teamStore, form: { getFieldDecorator } } = this.props;
     const { stateLoading, currentTabKey, current, done, visible } = this.state;
-    const loading = propsLoading || stateLoading;
     let { offlineData, offlineChartData } = analysisStore.chartData;
-    if (offlineData && offlineData.length > 0) offlineData = offlineData.slice();
-    if (offlineChartData && offlineChartData.length > 0) offlineChartData = offlineChartData.slice();
     let { projectListData } = teamStore;
-    if (projectListData.length > 0) projectListData = projectListData.slice();
+    const loading = propsLoading || stateLoading;
+    offlineData = util.formatMobxArray(offlineData);
+    offlineChartData = util.formatMobxArray(offlineChartData);
+    projectListData = util.formatMobxArray(projectListData);
     const activeKey = currentTabKey || (offlineData && offlineData[0] && offlineData[0].name);
-
-    //TODO: list datasource form: getFieldDecorator
 
     const CustomTab = ({ data, currentTabKey: currentKey }) => (
       <Row gutter={8} style={{ width: 138, margin: '8px 0' }}>
@@ -219,7 +216,7 @@ export class TeamInfoPage extends Component {
     };
 
     return (
-      <div>
+      <div className={"standardList"}>
         <Card
           loading={loading}
           className="offlineCard"
@@ -247,24 +244,11 @@ export class TeamInfoPage extends Component {
         <Card
           className="listCard"
           bordered={false}
-          title="标准列表"
+          title="团队项目情况"
           style={{ marginTop: 24 }}
           bodyStyle={{ padding: '0 32px 40px 32px' }}
           extra={extraContent}
         >
-          <Button
-            type="dashed"
-            style={{ width: '100%', marginBottom: 8 }}
-            icon="plus"
-            onClick={this.showModal}
-            ref={component => {
-              /* eslint-disable */
-              this.addBtn = findDOMNode(component);
-              /* eslint-enable */
-            }}
-          >
-            添加
-          </Button>
           <List
             size="large"
             rowKey="id"

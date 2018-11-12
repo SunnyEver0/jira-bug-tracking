@@ -6,9 +6,9 @@ export default {
   start() {
     fetchMock.get('http://10.16.87.146:3000/api/analysis', () => {
       return charts.getFakeChartData;
-    })
+    });
 
-    fetchMock.get('http://10.16.87.146:3000/api/appList', () => {
+    fetchMock.get('http://10.16.87.146:3000/api/projectInfo', () => {
       return appList.fake_list_data
     })
 
