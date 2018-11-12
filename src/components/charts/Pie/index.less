@@ -1,14 +1,14 @@
 @import '~antd/lib/style/themes/default.less';
 
-.pie {
+.pie-pie {
   position: relative;
-  .chart {
+  .pie-chart {
     position: relative;
   }
-  &.hasLegend .chart {
+  &.pie-hasLegend .pie-chart {
     width: ~'calc(100% - 240px)';
   }
-  .legend {
+  .pie-legend {
     position: absolute;
     right: 0;
     min-width: 200px;
@@ -27,7 +27,7 @@
       }
     }
   }
-  .dot {
+  .pie-dot {
     border-radius: 8px;
     display: inline-block;
     margin-right: 8px;
@@ -36,27 +36,27 @@
     height: 8px;
     width: 8px;
   }
-  .line {
+  .pie-line {
     background-color: @border-color-split;
     display: inline-block;
     margin-right: 8px;
     width: 1px;
     height: 16px;
   }
-  .legendTitle {
+  .pie-legendTitle {
     color: @text-color;
   }
-  .percent {
+  .pie-percent {
     color: @text-color-secondary;
   }
-  .value {
+  .pie-value {
     position: absolute;
     right: 0;
   }
   .title {
     margin-bottom: 8px;
   }
-  .total {
+  .pie-total {
     position: absolute;
     left: 50%;
     top: 50%;
@@ -87,7 +87,7 @@
     width: 100%;
     margin: 0 0 32px 0;
   }
-  .legend {
+  .pie-legend {
     position: relative;
     transform: none;
   }

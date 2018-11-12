@@ -21,7 +21,7 @@ const renderTotal = total => {
 
 class ChartCard extends React.PureComponent {
   renderConnet = () => {
-    const { contentHeight, title, avatar, action, total, footer, children, loading, contentStyle, contentFixedStyle } = this.props;
+    const { contentHeight, title, avatar, action, total, footer, children, loading } = this.props;
     if (loading) {
       return false;
     }
