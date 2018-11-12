@@ -6,7 +6,10 @@ export class HomeStore {
    * 用户是否已登录
    */
   @observable
-  chartData = {};
+  chartData = {
+    bugInfo: {},
+    bugMonthList: []
+  };
 
   /*
   *

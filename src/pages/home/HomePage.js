@@ -29,6 +29,7 @@ import Trend from '../../components/Trend';
 import React, {Component} from 'react';
 import {GridContent} from '../../components/PageHeaderWrapper/GridContent';
 import './HomePage.less'
+import { utils } from '../../utils/util'
 
 const {TabPane} = Tabs;
 
@@ -43,13 +44,6 @@ export class HomePage extends Component {
       salesType: 0
     };
     this.pickerList = [];
-    this.rankingListData = [];
-    for (let i = 0; i < 7; i += 1) {
-      this.rankingListData.push({
-        title: (i + 1) + '月',
-        total: 323234,
-      });
-    }
   }
 
   componentDidMount() {
@@ -148,22 +142,6 @@ export class HomePage extends Component {
       </Menu>
     );
 
-
-    const salesData = [
-      {x: "1月", y: 1117},
-      {x: "2月", y: 861},
-      {x: "3月", y: 936},
-      {x: "4月", y: 684},
-      {x: "5月", y: 1025},
-      {x: "6月", y: 583},
-      {x: "7月", y: 837},
-      {x: "8月", y: 560},
-      {x: "9月", y: 655},
-      {x: "10月", y: 258},
-      {x: "11月", y: 402},
-      {x: "12月", y: 364}
-    ]
-
     const {propsLoading} = this.props;
     const {stateLoading} = this.state;
     const loading = propsLoading || stateLoading;
@@ -195,6 +173,8 @@ export class HomePage extends Component {
       </span>
     );
 
+
+
     return (
       <GridContent>
         <div style={{marginTop: "24px"}}>
@@ -211,7 +191,7 @@ export class HomePage extends Component {
                   </Tooltip>
                 }
                 loading={loading}
-                total={() => <div style={{lineHeight: "38px"}}>126560</div>}
+                total={() => <div style={{lineHeight: "38px"}}>{this.props.homeStore.chartData.bugInfo.bugTotal}</div>}
                 footer={
                   <Field
                     label={'日新增'}
@@ -242,7 +222,7 @@ export class HomePage extends Component {
                     <Icon type="info-circle-o"/>
                   </Tooltip>
                 }
-                total={numeral(8846).format('0,0')}
+                total={this.props.homeStore.chartData.bugInfo.onLineBug}
                 footer={
                   <Field
                     label={'当日 Online Bug'}
@@ -266,7 +246,7 @@ export class HomePage extends Component {
                     <Icon type="info-circle-o"/>
                   </Tooltip>
                 }
-                total={numeral(6560).format('0,0')}
+                total={this.props.homeStore.chartData.bugInfo.notOnlineBug}
                 footer={
                   <Field
                     label={'当日bug量'}
@@ -295,7 +275,7 @@ export class HomePage extends Component {
                       <Bar
                         height={295}
                         title={"Bug数量"}
-                        data={salesData}
+                        data={utils.transformData(this.props.homeStore.chartData.bugMonthList)}
                       />
                     </div>
                   </Col>
@@ -305,7 +285,7 @@ export class HomePage extends Component {
                         各月Bug产出排行
                       </h4>
                       <ul className={"rankingList"}>
-                        {this.rankingListData.map((item, i) => (
+                        {utils.getRankBugs(6).map((item, i) => (
                           <li key={item.title}>
                             <span
                               className={`${"rankingItemNumber"} ${

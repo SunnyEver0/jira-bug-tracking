@@ -7,26 +7,26 @@ export const homeService = {
       setTimeout(() => {
         resolve({
           bugInfo: {
-            bugTotal: 126560,
+            bugTotal: 9999,
             dayAdd: 12423,
-            onLineBug: 8848,
+            onLineBug: 88899,
             dayOnlineBug: 1234,
-            notOnlineBug: 6560,
+            notOnlineBug: 656099,
             dayBug: 100
           },
           bugMonthList: [
-            {month: "1月", value: 1117},
-            {month: "2月", value: 861},
-            {month: "3月", value: 936},
-            {month: "4月", value: 684},
-            {month: "5月", value: 1025},
-            {month: "6月", value: 583},
-            {month: "7月", value: 837},
-            {month: "8月", value: 560},
-            {month: "9月", value: 655},
-            {month: "10月", value: 258},
-            {month: "11月", value: 402},
-            {month: "12月", value: 364}
+            {month: "1", value: 1117},
+            {month: "2", value: 861},
+            {month: "3", value: 936},
+            {month: "4", value: 684},
+            {month: "5", value: 1025},
+            {month: "6", value: 583},
+            {month: "7", value: 837},
+            {month: "8", value: 560},
+            {month: "9", value: 655},
+            {month: "10", value: 258},
+            {month: "11", value: 402},
+            {month: "12", value: 364}
           ],
           bugCategory: {
             bugType: {
